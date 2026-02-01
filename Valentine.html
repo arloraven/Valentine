@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Valentine Surprise 💖</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    font-family: Arial, sans-serif;
+}
+
+/* Floating hearts background */
+.heart {
+    position: absolute;
+    bottom: -10px;
+    color: rgba(255, 0, 100, 0.8);
+    font-size: 20px;
+    animation: floatUp 6s linear infinite;
+}
+
+@keyframes floatUp {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-100vh); opacity: 0; }
+}
+
+/* Explosion hearts */
+.burst {
+    position: absolute;
+    font-size: 26px;
+    animation: burstUp 0.8s ease-out forwards;
+}
+
+@keyframes burstUp {
+    from { opacity: 1; transform: scale(1) translateY(0); }
+    to { opacity: 0; transform: scale(2.3) translateY(-150px); }
+}
+
+/* Popup */
+.popup {
+    background: white;
+    padding: 40px 50px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    z-index: 10;
+}
+
+h1 {
+    margin-bottom: 35px;
+    color: #ff4d6d;
+}
+
+/* Button area */
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    position: relative;
+}
+
+button {
+    padding: 15px 40px;
+    font-size: 22px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+#yesBtn {
+    background: #ff4d6d;
+    color: white;
+}
+
+#noBtn {
+    background: #999;
+    color: white;
+    position: relative;
+}
+
+#message {
+    display: none;
+    margin-top: 25px;
+}
+
+#message h2 {
+    font-size: 34px;
+    color: #ff4d6d;
+    margin-bottom: 15px;
+}
+
+#danceGif {
+    width: 260px;
+    border-radius: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="popup">
+
+    <h1>Poorvi, will you be my Valentine? 💘</h1>
+
+    <div class="buttons">
+        <button id="yesBtn">YES</button>
+        <button id="noBtn">NO</button>
+    </div>
+
+    <div id="message">
+        <h2>YAYYYYY! You’re my Valentine forever! 💖</h2>
+        <img id="danceGif" src="https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUycnV5MHNvMGRvZXBmM3J1b3Nid21mbmJwZ24yY3d3MGYya3doeTNlayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3rgXBxX4myufzT6N2w/giphy.gif">
+    </div>
+
+</div>
+
+<script>
+
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const message = document.getElementById("message");
+
+let yesSize = 1;
+let noSize = 1;
+
+// NO button escapes
+noBtn.addEventListener("mouseover", () => {
+
+    const x = Math.random() * 220 - 110;
+    const y = Math.random() * 100 - 50;
+
+    noBtn.style.transform = `translate(${x}px, ${y}px) scale(${noSize})`;
+
+    noSize -= 0.1;
+    if (noSize < 0.4) noSize = 0.4;
+
+    yesSize += 0.15;
+    yesBtn.style.transform = `scale(${yesSize})`;
+});
+
+// YES clicked
+yesBtn.addEventListener("click", () => {
+
+    explodeHearts();
+
+    setTimeout(() => {
+        document.querySelector(".buttons").style.display = "none";
+        message.style.display = "block";
+    }, 500);
+
+});
+
+// Floating hearts creation
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "💖";
+
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 24 + 16 + "px";
+    heart.style.animationDuration = Math.random() * 3 + 4 + "s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 7000);
+}
+
+setInterval(createHeart, 300);
+
+// Heart explosion on YES
+function explodeHearts() {
+
+    const rect = yesBtn.getBoundingClientRect();
+
+    for (let i = 0; i < 14; i++) {
+        const h = document.createElement("div");
+        h.className = "burst";
+        h.innerHTML = "❤️";
+
+        h.style.left = rect.left + rect.width / 2 + "px";
+        h.style.top = rect.top + rect.height / 2 + "px";
+
+        h.style.transform = `rotate(${Math.random()*360}deg)`;
+
+        document.body.appendChild(h);
+
+        setTimeout(() => h.remove(), 900);
+    }
+}
+
+</script>
+
+</body>
+</html>
